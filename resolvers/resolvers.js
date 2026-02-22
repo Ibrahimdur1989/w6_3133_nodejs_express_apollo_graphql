@@ -14,6 +14,22 @@ const movieResolvers = {
         moviesByDirector: async (__dirname, args) => {
             return await MovieModel.findByDirector(args.director_name)
         }
+    },
+
+    Mutation: {
+        addMovie: async (__, args) => {
+            const movie = new MovieModel(args);
+            return await movie.save();
+        }, 
+
+        updateMovie: async (__, args) => {
+            const { id, ...updateData } = args;
+            return await MovieModel.findByIdAndUpdate(id, updateData, { new: true });
+        },
+
+        deleteMovie: async (__, args) => {
+            return await MovieModel.findByIdAndDelete(args.id);
+        }
     }
 };
 
